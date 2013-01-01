@@ -1,0 +1,15 @@
+#!/bin/bash
+
+MYSQL=`which mysql`
+
+queryDb="CREATE DATABASE IF NOT EXISTS $1;"
+queryGrant="GRANT ALL ON $1.* TO '$2'@'localhost' IDENTIFIED BY '$3';"
+queryFlush="FLUSH PRIVILEGES;"
+query="${queryDb}${queryGrant}${queryFlush}"
+
+if [ $# -ne 3 ] 
+then
+  echo "Usage: $0 dbname dbuser dbpass"
+else
+  $MYSQL -u root -p -e "$query"
+fi
