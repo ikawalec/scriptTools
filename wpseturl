@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Simple tool to change wordpress site url
+# Usage: ./wpseturl database_name database_user_name url
+# Example: ./wpseturl blog blog_user http://blog.localhost
+
+db=$1
+db_user=$2
+url=$3
+
+# wp tables prefix
+prefix="wp_"
+
+if [ -n $1 -a -n $2 -a -n $3 ]
+then
+    sql="UPDATE ${prefix}options SET option_value = '$url' WHERE option_name in ('siteurl', 'home')";
+    echo $sql | mysql -u $db_user -p $db
+else
+    echo "Usage: ./`basename $0` database_name database_user_name url"
+    echo "Example: ./`basename $0` blog blog_user http://blog.localhost"
+fi
